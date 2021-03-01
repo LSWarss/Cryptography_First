@@ -1,4 +1,4 @@
-# Crypthography First Assignment
+# Cryptography First Assignment
 
 ## Description: 
 
