@@ -26,7 +26,7 @@ class CaesarCoder(CodingInterface):
         """Encodes letter by given stride in the class"""
         if(letter.isspace()):
             return chr(ord(letter))
-        elif(ord(letter) < 97 & ord(letter) > 122):
+        if(ord(letter) < 97 or ord(letter) > 122):
             return chr(ord(letter))
         elif(ord(letter) + self.stride > 122):
             return chr(ord(letter) - 26 + self.stride)
@@ -37,7 +37,7 @@ class CaesarCoder(CodingInterface):
         """Decodes letter by given stride in the class"""
         if(letter.isspace()):
             return chr(ord(letter))
-        elif(ord(letter) < 97 & ord(letter) > 122):
+        elif(ord(letter) < 97 or ord(letter) > 122):
             return chr(ord(letter))
         elif(ord(letter) - self.stride < 97):
             return chr(ord(letter) + 26 - self.stride)
