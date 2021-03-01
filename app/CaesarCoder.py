@@ -18,23 +18,29 @@ class CaesarCoder(CodingInterface):
     def decode(self, inputStr: str):
         """Decodes string"""
         outputStr = ""
-        for letter in inputStr:
+        for letter in inputStr.lower():
             outputStr = outputStr + self.strideDown(letter)
         return outputStr
     
     def strideUp(self, letter: str):
-        if(ord(letter) + self.stride > 122):
+        """Encodes letter by given stride in the class"""
+        if(letter.isspace()):
+            return chr(ord(letter))
+        elif(ord(letter) < 97 & ord(letter) > 122):
+            return chr(ord(letter))
+        elif(ord(letter) + self.stride > 122):
             return chr(ord(letter) - 26 + self.stride)
-        elif(ord(letter) == 32):
-            return " "
         else:
             return chr(ord(letter) + self.stride)
     
     def strideDown(self, letter: str):
-        if(ord(letter) - self.stride < 97):
+        """Decodes letter by given stride in the class"""
+        if(letter.isspace()):
+            return chr(ord(letter))
+        elif(ord(letter) < 97 & ord(letter) > 122):
+            return chr(ord(letter))
+        elif(ord(letter) - self.stride < 97):
             return chr(ord(letter) + 26 - self.stride)
-        elif(ord(letter) == 32):
-            return " "
         else:
             return chr(ord(letter) - self.stride)
-    
+        
