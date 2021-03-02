@@ -1,4 +1,4 @@
-# CRYPTOGRAPHY FIRST ASSIGNMENT REPO
+# Cryptography First Assignment
 
 ## Description: 
 
