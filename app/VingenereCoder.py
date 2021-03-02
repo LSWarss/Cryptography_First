@@ -4,7 +4,6 @@ import re
 class VingenereCoder(CodingInterface):
 
     keyword = "uekatowice"
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
 
     def __init__(self, keyword):
         self.table = self.generateTable()
