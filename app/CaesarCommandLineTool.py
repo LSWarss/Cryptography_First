@@ -1,6 +1,6 @@
 import click
 from CaesarCoder import CaesarCoder
-from CodeCracking import maunal_caesar_cracking
+from CodeCracking import maunal_caesar_cracking, getTheLowestEntropy
 
 @click.group()
 def cli():
@@ -27,6 +27,11 @@ def decode(stride, text):
 @cli.command()
 def maunal_cracking():
     maunal_caesar_cracking()
+    
+@cli.command()
+@click.argument('text')
+def automatic_cracking(text):
+    getTheLowestEntropy(text)
 
 
 if __name__ == '__main__':
