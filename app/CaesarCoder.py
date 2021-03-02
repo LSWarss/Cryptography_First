@@ -43,4 +43,4 @@ class CaesarCoder(CodingInterface):
             return chr(ord(letter) + 26 - self.stride)
         else:
             return chr(ord(letter) - self.stride)
-        
+    

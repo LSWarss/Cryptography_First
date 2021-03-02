@@ -1,5 +1,6 @@
 import click
 from CaesarCoder import CaesarCoder
+from CodeCracking import maunal_caesar_cracking
 
 @click.group()
 def cli():
@@ -22,6 +23,11 @@ def encode(stride, text):
 def decode(stride, text):
     coder = CaesarCoder(stride)
     click.echo(coder.decode(text))
+
+@cli.command()
+def maunal_cracking():
+    maunal_caesar_cracking()
+
 
 if __name__ == '__main__':
     cli()
