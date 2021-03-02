@@ -1,52 +1,81 @@
 from CodingInterface import CodingInterface
+import re
 
 class VingenereCoder(CodingInterface):
 
-    key = "uekatowice"
+    keyword = "uekatowice"
     alphabet = "abcdefghijklmnopqrstuvwxyz"
-    letter_to_index = dict(zip(alphabet, range(len(alphabet))))
-    index_to_letter = dict(zip(range(len(alphabet)), alphabet))
 
-    def __init__(self, key):
-        self.key = key
+    def __init__(self, keyword):
+        self.table = self.generateTable()
+        self.keyword = keyword
 
     def encode(self, inputStr: str):
         """Encodes input string with the help of the key"""
-        encrypted = ""
-        split_message = [
-            inputStr[i : i + len(self.key)] for i in range(0, len(inputStr), len(self.key))]
+        text = self.process_plaintext(inputStr)
+        keywordrepeated = self.get_keyword_repeated(self.keyword, len(text))
+        ciphertext = []
 
-        for each_split in split_message:
-            i = 0
-            for letter in each_split:
-                number = (self.letter_to_index[letter] + self.letter_to_index[self.key[i]]) % len(self.alphabet)
-                encrypted += self.index_to_letter[number]
-                i += 1
+        for index, letter in enumerate(text):
 
-        return encrypted
+            textIndex = ord(letter.upper()) - 65
+            keywordindex = ord(keywordrepeated[index]) - 65
+
+            encipheredletter = self.table[keywordindex][textIndex]
+
+            ciphertext.append(encipheredletter)
+
+        return "".join(ciphertext)
 
     def decode(self, inputStr: str):
-        """Decodes input string with the help of the key"""
-        decrypted = ""
-        split_encrypted = [
-            inputStr[i : i + len(self.key)] for i in range(0, len(inputStr), len(self.key))]
-            
-        for each_split in split_encrypted:
-            i = 0
-            for letter in each_split:
-                number = (self.letter_to_index[letter] - self.letter_to_index[self.key[i]]) % len(self.alphabet)
-                decrypted += self.index_to_letter[number]
-                i += 1
+        """Decodes input string with the help of the keyword"""
 
-        return decrypted
+        keywordrepeated = self.get_keyword_repeated(self.keyword, len(inputStr))
+        decipheredtext = []
+
+        for index, letter in enumerate(inputStr):
+
+            keywordindex = ord(keywordrepeated[index]) - 65
+
+            decipheredletter = chr(self.table[keywordindex].index(letter) + 65)
+
+            decipheredtext.append(decipheredletter)
+
+        return "".join(decipheredtext)
+
     
-    def generateKey(self, inputStr: str, key):
-        """ Generates key in loop until lenght of the key will be equal to input String"""
-        key = list(key)
-        if len(inputStr) == len(key):
-            return key
-        else: 
-            for iteration in range(len(inputStr) - len(key)):
-                key.append(key[iteration % len(key)])
+    def generateTable(self):
         
-        return "".join(key)
+        table = []
+        for r in range(0,26):
+            offset = 0
+            row = []
+
+            for c in range(0,26):
+                row.append(chr(r + 65 + offset))
+                offset += 1
+                if offset > (25 - r):
+                    offset = offset - 26
+            table.append(row)
+        return table
+
+    def process_plaintext(self, plaintext):
+        plaintext = plaintext.upper()
+        plaintext = re.sub("[^A-Z]", "", plaintext)
+
+        return plaintext
+
+    def get_keyword_repeated(self, keyword, length):
+
+        keyword = keyword.upper()
+        keywordrepeated = []
+        keywordlength = len(keyword)
+        keywordindex = 0
+
+        for i in range(0, length):
+            keywordrepeated.append(keyword[keywordindex])
+            keywordindex += 1
+            if keywordindex > keywordlength - 1:
+                keywordindex = 0
+
+        return "".join(keywordrepeated)
